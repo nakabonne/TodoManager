@@ -58,6 +58,24 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         present(alertController, animated: true, completion: nil)
     }
     
+    
+    // テーブルの行数を返却する
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // todoの配列の長さを返却する
+        return todoList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // storyboardで指定したtodoCell識別子を利用して再利用可能なセルを取得する
+        let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
+        
+        // 行番号のあったtodoのタイトルを取得
+        let todoTitle = todoList[IndexPath.row]
+        //セルのラベルにtodoのタイトルをセット
+        cell.textLabel?.text = todoTitle
+        return cell
+    }
+    
 
 
 }
