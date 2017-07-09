@@ -8,7 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    var todoList = [String]()
+    // テーブル
+    @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +23,41 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // +ボタンを押した時
+    @IBAction func tapAddButton(_ sender: Any){
+        // アラートダイアログを生成
+        let alertController = UIAlertController(title: "TODO追加", message: "TOODを入力して下さい", preferredStyle: UIAlertControllerStyle.alert)
+        
+        // テキストエリアを追加
+        alertController.addTextField(configurationHandler: nil)
+        
+        // OKボタンを追加
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action:UIAlertAction) in
+            //OKボタンが押された時
+            if let textField = alertController.textFields?.first {
+                // TODOの配列の戦闘に入力値を入れる
+                self.todoList.insert(textField.text!, at: 0)
+                
+                // テーブルに行が追加されたことをテーブルに通知
+                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
+            }
+        }
+        
+        
+        // OKボタン追加
+        alertController.addAction(okAction)
+        
+        // キャンセルボタンが押された時
+        let cancelButton = UIAlertAction(title: "CANCEL", style: UIAlertActionStyle.cancel, handler: nil)
+        
+        // キャンセルボタン追加
+        alertController.addAction(cancelButton)
+        
+        // アラートダイアログを表示
+        present(alertController, animated: true, completion: nil)
+    }
+    
 
 
 }
