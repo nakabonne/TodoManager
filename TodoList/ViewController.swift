@@ -16,7 +16,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        // todoの読み込み
+        let userDefaults = UserDefaults.standard
+        if let storedTodoList = userDefaults.array(forKey: "todoList") as? [String] {
+            todoList.append(contentsOf: storedTodoList)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,6 +46,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 
                 // テーブルに行が追加されたことをテーブルに通知
                 self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.right)
+                
+                // todoの保存処理
+                let userDefaults = UserDefaults.standard
+                userDefaults.set(self.todoList, forkey: "todoList")
+                userDefaults.synchronize()
             }
         }
         
@@ -70,7 +80,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
         
         // 行番号のあったtodoのタイトルを取得
-        let todoTitle = todoList[IndexPath.row]
+        let todoTitle = todoList[indexPath.row]
         //セルのラベルにtodoのタイトルをセット
         cell.textLabel?.text = todoTitle
         return cell
